@@ -1,0 +1,14 @@
+pages:
+  - users:
+      - id: 1
+        key: ken
+        name: First user
+        posts:
+          - id: 1
+            title: First post
+            body: Hello, world
+          - id: 2
+            title: Second post
+            body: Hello, hello, world
+
+
