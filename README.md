@@ -1,5 +1,5 @@
 # Yabass
-Yabass is *YA*ML *Ba*sed *S*tatic *S*ite Generator.
+Yabass is **YA**ML **Ba**sed **S**tatic **S**ite Generator.
 
 ## Install
 1. Clone this repo
@@ -8,7 +8,7 @@ Yabass is *YA*ML *Ba*sed *S*tatic *S*ite Generator.
 2. Append yabass/bin to your PATH
 
 ## Usage
-1. Create YAML data file
+### 1.Create YAML data file
 
 `data/index.yml`
 ```yml
@@ -22,7 +22,7 @@ pages:
         body: Hello, hello, world
 ```
 
-2. Create Views
+### 2.Create Views
 
 * Layout file
 * Index view
@@ -38,9 +38,9 @@ are available.
 		└── show.erb
 ```
 
-3. Generate static html
+### 3.Generate static html
 
-Run `yabass generate` and your static sites will be generated in your `public` directory!
+Run `yabass generate` and your static site will be generated in your `public` directory!
 
 ## Author
 syumai
