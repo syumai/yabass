@@ -1,0 +1,9 @@
+pages:
+  - posts:
+      - id: 1
+        title: First page
+        body: Hello, world
+      - id: 2
+        title: Second page
+        body: Hello, hello, world
+

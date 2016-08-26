@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require '../lib/yabass'
+
+if ARGV.first === 'generate'
+  yabass = Yabass::Yabass.new(Dir.pwd)
+  yabass.generate
+end
+
