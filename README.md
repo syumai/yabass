@@ -3,9 +3,10 @@ Yabass is **YA**ML **Ba**sed **S**tatic **S**ite Generator.
 
 ## Install
 1. Clone this repo
+
 `git clone https://github.com/syumai/yabass/`
 
-2. Append yabass/bin to your PATH
+2. Append `yabass/bin` to your PATH
 
 ## Usage
 ### 1.Create YAML data file
@@ -46,7 +47,7 @@ Run `yabass generate` and your static site will be generated in your `public` di
 
 ### Basic
 
-* Site's routing is based on data YAML file.
+* Generated html's routing is based on data YAML file.
 * `id` attribute is required for each records.
 * If you set `key` attribute on your record, it will be used as url.
 

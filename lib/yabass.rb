@@ -1,41 +1,89 @@
 require 'yaml'
 require 'erb'
-require 'find'
+require 'logger'
 
 module Yabass
   class Yabass
+    attr_reader :routes, :console
+
     def initialize(root_path)
+      @console = Logger.new(STDOUT)
       @root_path = root_path
       file_path = File.expand_path('data/index.yml', root_path)
       @data = YAML.load(File.read(file_path))
+      init_routes
+    end
+
+    def print_routes
+      puts @routes.routes
     end
 
     def generate
-      raise 'Data is not loaded' if @data.nil?
-      @data.each do |key, value|
-        if key === 'pages'
-          value.each do |model|
-            model.each do |path, ary|
-              ary.each do |data|
-                file = render(data, path)
-                output(file, "#{path}/#{data['id']}")
-              end
-              if File.exist?(File.expand_path("views/#{path}/index.erb", @root_path))
-                file = render(ary, path, 'index')
-                output(file, path)
-              end
-            end
-          end
+      @routes.each do |info|
+        file_path = info[:file_path]
+        data = info[:data]
+        route = info[:route]
+        output_path = File.expand_path("public/#{route}/index.html", @root_path)
+        file = render(data, file_path)
+        generate_missing_dir(output_path)
+        File.open(output_path, 'w') do |f|
+          f.print file
         end
       end
     end
 
     private
-      def output(file, path, file_name = 'index')
-        file_path = File.expand_path("public/#{path}/#{file_name}.html", @root_path)
-        generate_missing_dir(file_path)
-        File.open(file_path, 'w') do |f|
-          f.print file
+      def init_routes
+        console.error('Data is not loaded') if @data.nil?
+        @routes = []
+        class << @routes
+          def routes; self.map{|h| h[:route]}; end
+          def file_paths; self.map{|h| h[:file_path]}; end
+          def data; self.map{|h| h[:data]}; end
+        end
+        @data['pages'].each do |model|
+          set_index_route(model)
+        end
+      end
+
+      def set_index_route(model, prev_route = '', parents = '')
+        model_name = model.keys.first
+        list = model.values.first
+        parents = "#{parents}/#{model_name}"
+        file_path = File.expand_path("views#{parents}/index.erb", @root_path)
+        file_exists = File.exist?(file_path)
+        hidden = /^_/ =~ model_name
+        console.warn("Index view file for '#{parents}' => #{file_path} was not found") if !hidden && !file_exists
+        if !hidden && file_exists
+          new_route = "#{prev_route}/#{model_name}"
+          route_info = {
+            route: new_route,
+            file_path: file_path,
+            data: list
+          }
+          @routes.push(route_info)
+        end
+        if list.kind_of?(Array)
+          list.each do |element|
+            set_element_route(element, new_route || prev_route, parents)
+          end
+        end
+      end
+
+      def set_element_route(element, prev_route, parents)
+        key = element['key'] || element['id']
+        file_path = File.expand_path("views#{parents}/show.erb", @root_path)
+        new_route = "#{prev_route}/#{key}"
+        route_info = {
+          route: new_route,
+          file_path: file_path,
+          data: element
+        }
+        @routes.push(route_info)
+        element.each do |k, v|
+          if v.kind_of?(Array) && v.first['id']
+            set_index_route({k => v}, new_route, parents)
+          end
         end
       end
 
@@ -56,10 +104,8 @@ module Yabass
         end
       end
 
-      def render(data, path, view_name = 'show', layout = '_layout.erb')
-        view_path = "views/#{path}/#{view_name}.erb"
-        view_file = File.expand_path(view_path, @root_path)
-        view_erb = ERB.new(File.read(view_file))
+      def render(data, file_path, layout = '_layout.erb')
+        view_erb = ERB.new(File.read(file_path))
         page = view_erb.result(binding)
         render_layout(page)
       end
