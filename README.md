@@ -51,8 +51,6 @@ Run `yabass generate` and your static site will be generated in your `public` di
 * `id` attribute is required for each records.
 * If you set `key` attribute on your record, it will be used as url.
 
-## YAML Format
-
 #### Example
 
 * YAML
@@ -68,7 +66,7 @@ pages:
         title: Second page
 ```
 
-* View files
+* Views
 
 ```
 └── views
@@ -110,7 +108,7 @@ pages:
             body: Hello, hello, world
 ```
 
-* View files
+* Views
 
 ```
 └── views
@@ -135,7 +133,7 @@ pages:
 
 ### Hiding keys
 
-* If you don't want to add key (ex. 'users' or 'posts'), add '\_' on the top of the model name.
+* If you don't want to add keys to URL (ex. 'users' or 'posts'), add '\_' on the top of the model name.
 
 #### Example
 
@@ -157,7 +155,7 @@ pages:
             body: Hello, hello, world
 ```
 
-* View files
+* Views
 
 ```
 └── views
@@ -171,9 +169,9 @@ pages:
 * Routes
 
 ```sh
-/public/1       # First user
-/public/1/hello # First post
-/public/1/2     # Second post 
+/ken   # First user
+/ken/1 # First post
+/ken/2 # Second post 
 ```
 
 
