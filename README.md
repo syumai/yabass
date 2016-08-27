@@ -68,17 +68,27 @@ pages:
         title: Second page
 ```
 
-* route
+* View files
+
+```
+└── views
+    ├── _layout.erb
+	└── posts
+		├── index.erb
+		└── show.erb
+```
+
+* Routes
 
 ```sh
-/public/posts       # Posts index
-/public/posts/hello # First user
-/public/posts/2     # Second user
+/posts       # Posts index
+/posts/hello # First user
+/posts/2     # Second user
 ```
 
 ### Nesting
 
-TODO:
+* To nest pages, simply nest your data models and views.
 
 #### Example
 
@@ -100,19 +110,32 @@ pages:
             body: Hello, hello, world
 ```
 
-* route
+* View files
+
+```
+└── views
+    ├── _layout.erb
+	└── users
+		├── index.erb
+		├── show.erb
+		└── posts
+		    ├── index.erb
+		    └── show.erb
+```
+
+* Routes
 
 ```sh
-/public/users               # Users index
-/public/users/1             # First user
-/public/users/1/posts       # Users Posts index
-/public/users/1/posts/hello # First post
-/public/users/1/posts/2     # Second post
+/users             # Users index
+/users/ken         # First user
+/users/ken/posts   # Users Posts index
+/users/ken/posts/1 # First post
+/users/ken/posts/2 # Second post
 ```
 
 ### Hiding keys
 
-TODO:
+* If you don't want to add key (ex. 'users' or 'posts'), add '\_' on the top of the model name.
 
 #### Example
 
@@ -134,7 +157,18 @@ pages:
             body: Hello, hello, world
 ```
 
-* route
+* View files
+
+```
+└── views
+    ├── _layout.erb
+	└── users
+		├── show.erb
+		└── posts
+		    └── show.erb
+```
+
+* Routes
 
 ```sh
 /public/1       # First user
