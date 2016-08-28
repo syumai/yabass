@@ -25,11 +25,9 @@ pages:
 
 ### 2.Create Views
 
-* Layout file
+* Template layout view
 * Index view
 * Show view (for each 'posts' or something)
-
-are available.
 
 ```
 └── views
@@ -133,7 +131,7 @@ pages:
 
 ### Hiding keys
 
-* If you don't want to add keys to URL (ex. 'users' or 'posts'), add '\_' on the top of the model name.
+* If you don't want to add model names to URL (ex. 'users' or 'posts'), add '\_' on the top of the model name.
 
 #### Example
 
