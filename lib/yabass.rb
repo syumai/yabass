@@ -18,7 +18,8 @@ module Yabass
             @data = YAML.load(ERB.new(File.read(file_path)).result)
             break
           when 'rb'
-            @data = eval(File.read(file_path))
+            clean_room = Object.new
+            @data = clean_room.instance_eval(File.read(file_path))
             break
           end
         end
