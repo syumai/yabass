@@ -16,8 +16,21 @@ module Yabass
     def initialize(root_path)
       @console = Logger.new(STDOUT)
       @root_path = root_path
-      file_path = File.expand_path('data/index.yml', root_path)
-      @data = YAML.load(File.read(file_path))
+      file_extensions = %w|yml rb|
+      file_extensions.each do |ext|
+        file_path = File.expand_path("data/index.#{ext}", root_path)
+        if File.exist?(file_path)
+          case ext
+          when 'yml'
+            @data = YAML.load(ERB.new(File.read(file_path)).result)
+            break
+          when 'rb'
+            clean_room = Object.new
+            @data = clean_room.instance_eval(File.read(file_path))
+            break
+          end
+        end
+      end
       init_routes
       super
     end
@@ -36,7 +49,7 @@ module Yabass
         data = page.data
         route = page.route
         output_path = File.expand_path("public/#{route}/index.html", @root_path)
-        file = render(data, file_path)
+        file = render(file_path, data)
         generate_missing_dir(output_path)
         File.open(output_path, 'w') do |f|
           f.print file
@@ -108,10 +121,18 @@ module Yabass
         end
       end
 
-      def render(data, file_path, layout = '_layout.erb')
-        view_erb = ERB.new(File.read(file_path))
+      def render(full_file_path, data = nil, layout = '_layout.erb')
+        view_erb = ERB.new(File.read(full_file_path))
         page = view_erb.result(binding)
         render_layout(page)
+      end
+
+      def render_partial(file_path, **args)
+        full_file_path = File.expand_path("views/#{file_path}", @root_path)
+        view_erb = ERB.new(File.read(full_file_path))
+        _binding = binding
+        args.each {|k, v| _binding.local_variable_set(k, v) } unless args.empty?
+        view_erb.result(_binding)
       end
 
       def render_layout(page)
