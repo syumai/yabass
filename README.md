@@ -39,7 +39,21 @@ pages:
 
 ### 3.Generate static html
 
-Run `yabass generate` and your static site will be generated in your `public` directory!
+Run `yabass generate` then your static site will be generated in your `public` directory!
+
+```
+└── public
+   └── posts
+       ├── index.html
+       ├── 1
+       │   └── index.html
+       └── 2
+           └── index.html
+```
+
+## Development
+
+* Run `yabass server` to run local server. (in `localhost:3030`)
 
 ## Routing
 

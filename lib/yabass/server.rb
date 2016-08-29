@@ -1,6 +1,8 @@
 require 'webrick'
 
 module Yabass
+  autoload :Renderer, 'yabass/renderer'
+
   module Server
     class << self
       def start(pages)
@@ -8,12 +10,11 @@ module Yabass
                                            BindAddress: '127.0.0.1',
                                            Port: 3030})
         server.mount_proc('/') do |req, res|
-          p req.path
-          page = pages.routes.find{|p| p.route == req.path }
-          if page
-            res.body = render(page.data, page.file_path)
+          found_page = pages.find{|page| page.route === req.path }
+          if found_page
+            res.body = Renderer.render(found_page.file_path, found_page.data)
           else
-            res.body = "Path: #{req.path} \n Not found"
+            res.body = "Path: #{req.path}\nNot found"
           end
         end
         trap("INT"){ server.shutdown }
