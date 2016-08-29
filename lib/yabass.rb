@@ -10,7 +10,7 @@ module Yabass
       @console = Logger.new(STDOUT)
       @root_path = root_path
       file_path = File.expand_path('data/index.yml', root_path)
-      @data = YAML.load(File.read(file_path))
+      @data = YAML.load(ERB.new(File.read(file_path)).result)
       init_routes
     end
 
