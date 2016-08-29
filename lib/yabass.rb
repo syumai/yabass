@@ -37,7 +37,7 @@ module Yabass
         data = info[:data]
         route = info[:route]
         output_path = File.expand_path("public/#{route}/index.html", @root_path)
-        file = render(data, file_path)
+        file = render(file_path, data)
         generate_missing_dir(output_path)
         File.open(output_path, 'w') do |f|
           f.print file
@@ -117,7 +117,7 @@ module Yabass
         end
       end
 
-      def render(data, file_path, layout = '_layout.erb')
+      def render(file_path, data = nil, layout = '_layout.erb')
         view_erb = ERB.new(File.read(file_path))
         page = view_erb.result(binding)
         render_layout(page)
