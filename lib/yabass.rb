@@ -9,8 +9,20 @@ module Yabass
     def initialize(root_path)
       @console = Logger.new(STDOUT)
       @root_path = root_path
-      file_path = File.expand_path('data/index.yml', root_path)
-      @data = YAML.load(ERB.new(File.read(file_path)).result)
+      file_extensions = %w|yml rb|
+      file_extensions.each do |ext|
+        file_path = File.expand_path("data/index.#{ext}", root_path)
+        if File.exist?(file_path)
+          case ext
+          when 'yml'
+            @data = YAML.load(ERB.new(File.read(file_path)).result)
+            break
+          when 'rb'
+            @data = eval(File.read(file_path))
+            break
+          end
+        end
+      end
       init_routes
     end
 
