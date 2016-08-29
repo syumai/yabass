@@ -2,9 +2,16 @@ require 'yaml'
 require 'erb'
 require 'logger'
 
+$LOAD_PATH << "#{File.dirname(__FILE__)}"
+
 module Yabass
+  autoload :Page, 'yabass/page'
+  autoload :Server, 'yabass/server'
+
   class Yabass
-    attr_reader :routes, :console
+    attr_reader :console
+
+    include 'yabass/router'
 
     def initialize(root_path)
       @console = Logger.new(STDOUT)
@@ -12,17 +19,22 @@ module Yabass
       file_path = File.expand_path('data/index.yml', root_path)
       @data = YAML.load(File.read(file_path))
       init_routes
+      super
     end
 
-    def print_routes
-      puts @routes.routes
+    def server
+      Yabass::Server.start(@pages)
+    end
+
+    def routes
+      puts @pages.routes
     end
 
     def generate
-      @routes.each do |info|
-        file_path = info[:file_path]
-        data = info[:data]
-        route = info[:route]
+      @pages.each do |page|
+        file_path = page.file_path
+        data = page.data
+        route = page.route
         output_path = File.expand_path("public/#{route}/index.html", @root_path)
         file = render(data, file_path)
         generate_missing_dir(output_path)
@@ -35,11 +47,11 @@ module Yabass
     private
       def init_routes
         console.error('Data is not loaded') if @data.nil?
-        @routes = []
-        class << @routes
-          def routes; self.map{|h| h[:route]}; end
-          def file_paths; self.map{|h| h[:file_path]}; end
-          def data; self.map{|h| h[:data]}; end
+        @pages = []
+        class << @pages
+          def routes; self.map(&:route); end
+          def file_paths; self.map(&:file_path); end
+          def data; self.map(&:data); end
         end
         @data['pages'].each do |model|
           set_index_route(model)
@@ -56,12 +68,8 @@ module Yabass
         console.warn("Index view file for '#{parents}' => #{file_path} was not found") if !hidden && !file_exists
         if !hidden && file_exists
           new_route = "#{prev_route}/#{model_name}"
-          route_info = {
-            route: new_route,
-            file_path: file_path,
-            data: list
-          }
-          @routes.push(route_info)
+          page = Page.new(new_route, file_path, list)
+          @pages.push(page)
         end
         if list.kind_of?(Array)
           list.each do |element|
@@ -74,12 +82,8 @@ module Yabass
         key = element['key'] || element['id']
         file_path = File.expand_path("views#{parents}/show.erb", @root_path)
         new_route = "#{prev_route}/#{key}"
-        route_info = {
-          route: new_route,
-          file_path: file_path,
-          data: element
-        }
-        @routes.push(route_info)
+        page = Page.new(new_route, file_path)
+        @pages.push(page)
         element.each do |k, v|
           if v.kind_of?(Array) && v.first['id']
             set_index_route({k => v}, new_route, parents)
