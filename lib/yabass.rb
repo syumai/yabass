@@ -1,7 +1,6 @@
 require 'yaml'
 require 'erb'
 require 'logger'
-require 'pp'
 
 $LOAD_PATH << "#{File.dirname(__FILE__)}"
 

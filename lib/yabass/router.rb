@@ -1,6 +1,6 @@
-module Yabass
-  autoload :Page, 'yabass/page'
+require 'yabass/page'
 
+module Yabass
   module Router
     attr_reader :pages, :data
     def initialize(*args, &block)

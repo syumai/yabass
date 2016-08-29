@@ -1,8 +1,7 @@
 require 'webrick'
+require 'yabass/renderer'
 
 module Yabass
-  autoload :Renderer, 'yabass/renderer'
-
   module Server
     class << self
       def start(pages)

@@ -1,6 +1,6 @@
-module Yabass
-  autoload :Renderer, 'yabass/renderer'
+require 'yabass/renderer'
 
+module Yabass
   module Generator
     class << self
       def generate(pages)
