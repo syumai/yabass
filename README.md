@@ -13,14 +13,13 @@ Yabass is **YA**ML **Ba**sed **S**tatic **S**ite Generator.
 
 `data/index.yml`
 ```yml
-pages:
-  - posts:
-      - id: 1
-        title: First page
-        body: Hello, world
-      - id: 2
-        title: Second page
-        body: Hello, hello, world
+posts:
+  - id: 1
+    title: First page
+    body: Hello, world
+  - id: 2
+    title: Second page
+    body: Hello, hello, world
 ```
 
 ### 2.Create Views
@@ -69,13 +68,12 @@ Run `yabass generate` then your static site will be generated in your `public` d
 
 `examples/basic/data/index.yml`
 ```yml
-pages:
-  - posts:
-      - id: 1
-        key: hello
-        title: First page
-      - id: 2
-        title: Second page
+posts:
+  - id: 1
+    key: hello
+    title: First page
+  - id: 2
+    title: Second page
 ```
 
 * Views
@@ -106,18 +104,17 @@ pages:
 
 `examples/nested/data/index.yml`
 ```yml
-pages:
-  - users:
+users:
+  - id: 1
+    key: ken
+    name: First user
+    posts:
       - id: 1
-        key: ken
-        name: First user
-        posts:
-          - id: 1
-            title: First post
-            body: Hello, world
-          - id: 2
-            title: Second post
-            body: Hello, hello, world
+        title: First post
+        body: Hello, world
+      - id: 2
+        title: Second post
+        body: Hello, hello, world
 ```
 
 * Views
@@ -153,18 +150,17 @@ pages:
 
 `examples/nested/data/index.yml`
 ```yml
-pages:
-  - _users:
+_users:
+  - id: 1
+    key: ken
+    name: First user
+    _posts:
       - id: 1
-        key: ken
-        name: First user
-        _posts:
-          - id: 1
-            title: First post
-            body: Hello, world
-          - id: 2
-            title: Second post
-            body: Hello, hello, world
+        title: First post
+        body: Hello, world
+      - id: 2
+        title: Second post
+        body: Hello, hello, world
 ```
 
 * Views

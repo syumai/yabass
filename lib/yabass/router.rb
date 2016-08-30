@@ -36,8 +36,8 @@ module Yabass
           def file_paths; self.map(&:file_path); end
           def data; self.map(&:data); end
         end
-        @data['pages'].each do |model|
-          set_index_route(model)
+        @data.each do |k, v|
+          set_index_route({k => v})
         end
       end
 
