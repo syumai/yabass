@@ -1,9 +1,9 @@
+$LOAD_PATH << "#{File.dirname(__FILE__)}"
+
 require 'yaml'
 require 'erb'
 require 'logger'
-require_relative './yabass/version'
-
-$LOAD_PATH << "#{File.dirname(__FILE__)}"
+require 'yabass/version'
 
 module Yabass
   autoload :Router, 'yabass/router'
