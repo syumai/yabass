@@ -1,7 +1,7 @@
 require 'yaml'
 require 'erb'
 require 'logger'
-require 'yabass/version'
+require_relative './yabass/version'
 
 $LOAD_PATH << "#{File.dirname(__FILE__)}"
 
