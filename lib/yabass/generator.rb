@@ -7,9 +7,10 @@ module Yabass
         pages.each do |page|
           file_path = page.file_path
           data = page.data
+          parent = page.parent
           route = page.route
           output_path = File.expand_path("public/#{route}/index.html", ::Yabass::root)
-          file = Renderer.render(file_path, data)
+          file = Renderer.render(file_path, data, parent)
           generate_missing_dir(output_path)
           File.open(output_path, 'w') do |f|
             f.print file
