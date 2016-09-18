@@ -35,13 +35,14 @@ module Yabass
           def routes; self.map(&:route); end
           def file_paths; self.map(&:file_path); end
           def data; self.map(&:data); end
+          def parents; self.map(&:parent); end
         end
         @data.each do |k, v|
-          set_index_route({k => v})
+          set_index_route({k => v}, @data)
         end
       end
 
-      def set_index_route(model, prev_route = '', parents = '')
+      def set_index_route(model, parent_element, prev_route = '', parents = '')
         model_name = model.keys.first
         list = model.values.first
         parents = "#{parents}/#{model_name}"
@@ -56,20 +57,20 @@ module Yabass
         end
         if list.kind_of?(Array)
           list.each do |element|
-            set_element_route(element, new_route || prev_route, parents)
+            set_element_route(element, parent_element, new_route || prev_route, parents)
           end
         end
       end
 
-      def set_element_route(element, prev_route, parents)
+      def set_element_route(element, parent_element, prev_route, parents)
         key = element['key'] || element['id']
         file_path = File.expand_path("views#{parents}/show.erb", root_path)
         new_route = "#{prev_route}/#{key}"
-        page = Page.new(new_route, file_path, element)
+        page = Page.new(new_route, file_path, element, parent_element)
         @pages.push(page)
         element.each do |k, v|
           if v.kind_of?(Array) && v.first['id']
-            set_index_route({k => v}, new_route, parents)
+            set_index_route({k => v}, element, new_route, parents)
           end
         end
       end

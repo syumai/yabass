@@ -1,7 +1,7 @@
 module Yabass
   module Renderer
     class << self
-      def render(full_file_path, data = nil, layout = '_layout.erb')
+      def render(full_file_path, data = nil, parent = nil, layout = '_layout.erb')
         view_erb = ERB.new(File.read(full_file_path))
         page = view_erb.result(binding)
         render_layout(page)

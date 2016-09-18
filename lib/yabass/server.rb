@@ -11,7 +11,7 @@ module Yabass
         server.mount_proc('/') do |req, res|
           found_page = pages.find{|page| page.route === req.path }
           if found_page
-            res.body = Renderer.render(found_page.file_path, found_page.data)
+            res.body = Renderer.render(found_page.file_path, found_page.data, found_page.parent)
           else
             res.body = "Path: #{req.path}\nNot found"
           end
