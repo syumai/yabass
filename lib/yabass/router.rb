@@ -29,7 +29,6 @@ module Yabass
       end
 
       def init_routes
-        console.error('Data is not loaded') if @data.nil?
         @pages = []
         class << @pages
           def routes; self.map(&:route); end
@@ -37,8 +36,12 @@ module Yabass
           def data; self.map(&:data); end
           def parents; self.map(&:parent); end
         end
-        @data.each do |k, v|
-          set_index_route({k => v}, @data)
+        if @data
+          @data.each do |k, v|
+            set_index_route({k => v}, @data)
+          end
+        else
+          console.error('Data is not loaded') 
         end
       end
 
@@ -46,15 +49,19 @@ module Yabass
         model_name = model.keys.first
         list = model.values.first
         parents = "#{parents}/#{model_name}"
-        file_path = File.expand_path("views#{parents}/index.erb", root_path)
-        file_exists = File.exist?(file_path)
-        hidden = /^_/ =~ model_name
-        console.warn("Index view file for '#{parents}' => #{file_path} was not found") if !hidden && !file_exists
-        if !hidden && file_exists
-          new_route = "#{prev_route}/#{model_name}"
-          page = Page.new(new_route, file_path, list, parent_element)
-          @pages.push(page)
+        view_path = File.expand_path("views#{parents}/index.erb", root_path)
+        hidden = model_name.start_with?('_') 
+
+        unless hidden
+          if File.exist?(view_path)
+            new_route = "#{prev_route}/#{model_name}"
+            page = Page.new(new_route, view_path, list, parent_element)
+            @pages.push(page)
+          else
+            console.warn("Index view file for '#{parents}' => #{view_path} was not found")
+          end
         end
+
         if list.kind_of?(Array)
           list.each do |element|
             set_element_route(element, parent_element, new_route || prev_route, parents)
