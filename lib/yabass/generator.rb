@@ -3,8 +3,8 @@ require 'yabass/renderer'
 module Yabass
   module Generator
     class << self
-      def generate(pages)
-        pages.each do |page|
+      def generate
+        Router.pages.each do |page|
           file_path = page.file_path
           data = page.data
           parent = page.parent
