@@ -4,7 +4,7 @@ module Yabass
       attr_accessor :route, :file_path
       def initialize(route, file_path)
         @route = route
-        @file_paht = file_path
+        @file_path = file_path
       end
 
       def to_h
