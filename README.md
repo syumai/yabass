@@ -2,11 +2,11 @@
 Yabass is **YA**ML **Ba**sed **S**tatic **S**ite Generator.
 
 ## Install
-1. Clone this repo
+1.Clone this repo
 
 `git clone https://github.com/syumai/yabass/`
 
-2. Append `yabass/bin` to your PATH
+2.Append `yabass/bin` to your PATH
 
 ## Usage
 ### 1.Create YAML data file
