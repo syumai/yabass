@@ -1,8 +1,8 @@
 <ul>
-<% data.each do |post| %>
+<% data.each do |user| %>
 	<li>
-		<a href="/posts/<%= post['id'] %>">
-			<%= post['title'] %>
+		<a href="/users/<%= user['key'] %>">
+			<%= user['name'] %>
 		</a>
 	</li>
 <% end %>

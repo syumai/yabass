@@ -1,7 +1,7 @@
 <ul>
 <% data.each do |post| %>
 	<li>
-		<a href="/posts/<%= post['id'] %>">
+		<a href="/users/<%= parent['key'] %>/posts/<%= post['id'] %>">
 			<%= post['title'] %>
 		</a>
 	</li>

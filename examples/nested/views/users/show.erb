@@ -1,6 +1,8 @@
 <div class="id">
 	id: <%= data['id'] %>
 </div>
-<div class="body">
-	body: <%= data['body'] %>
+<div class="name">
+	name: <%= data['name'] %>
 </div>
+<a href="/users/<%= "#{data['key']}" %>/posts">My posts</a>
+

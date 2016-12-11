@@ -52,7 +52,7 @@ module Yabass
         console.warn("Index view file for '#{parents}' => #{file_path} was not found") if !hidden && !file_exists
         if !hidden && file_exists
           new_route = "#{prev_route}/#{model_name}"
-          page = Page.new(new_route, file_path, list)
+          page = Page.new(new_route, file_path, list, parent_element)
           @pages.push(page)
         end
         if list.kind_of?(Array)
