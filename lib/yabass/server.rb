@@ -4,12 +4,12 @@ require 'yabass/renderer'
 module Yabass
   module Server
     class << self
-      def start
+      def start(router)
         server = WEBrick::HTTPServer.new({ DocumentRoot: './',
                                            BindAddress: '127.0.0.1',
                                            Port: 3030})
         server.mount_proc('/') do |req, res|
-          found_page = Router.pages.find{|page| /^#{page.route}\/?$/ =~ req.path }
+          found_page = router.pages.find{|page| /^#{page.route}\/?$/ =~ req.path }
           file_path = File.expand_path("public/#{req.path}", ::Yabass::root)
           index_path = "#{file_path}/index.html"
           if found_page

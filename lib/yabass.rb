@@ -15,23 +15,23 @@ module Yabass
   end
 
   class Yabass
-    attr_reader :root_path
+    attr_reader :root_path, :router
 
     def initialize(root_path)
       ::Yabass::root = root_path
-      Router.start
+      @router = Router.new
     end
 
     def routes
-      puts Router.pages.routes
+      puts router.pages.routes
     end
 
     def generate
-      Generator.generate
+      Generator.generate(router)
     end
 
     def server
-      Server.start
+      Server.start(router)
     end
   end
 end
