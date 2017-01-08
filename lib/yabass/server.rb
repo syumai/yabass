@@ -14,11 +14,11 @@ module Yabass
           file_path = File.expand_path("public/#{req.path}", ::Yabass::root)
           index_path = "#{file_path}/index.html"
           if found_page
-            if /.\/$/ =~ req.path
+            if directory_path?(req.path)
               res.body = Renderer.render(found_page.file_path, found_page.data, found_page.parent)
               res.content_type = 'text/html'
               res.status = 200
-            else # Redirect to directory index path
+            else # Redirect to directory path
               res['Pragma'] = 'no-cache'
               res.set_redirect(WEBrick::HTTPStatus::MovedPermanently, "#{found_page.route}/")
             end
@@ -27,10 +27,15 @@ module Yabass
             mime = WEBrick::HTTPUtils.mime_type(file_path, WEBrick::HTTPUtils::DefaultMimeTypes)
             res.content_type = mime
             res.status = 200
-          elsif File.file?(index_path)
-            res.body = File.read(index_path)
-            res.content_type = 'text/html'
-            res.status = 200
+          elsif File.directory?(file_path) && File.file?(index_path)
+            if directory_path?(req.path)
+              res.body = File.read(index_path)
+              res.content_type = 'text/html'
+              res.status = 200
+            else
+              res['Pragma'] = 'no-cache'
+              res.set_redirect(WEBrick::HTTPStatus::MovedPermanently, "#{req.path}/")
+            end
           else
             res.body = "Path: #{req.path}\nNot found"
             res.content_type = 'text/plain'
@@ -40,6 +45,10 @@ module Yabass
         trap("INT"){ server.shutdown }
         server.start
       end
+      private
+        def directory_path?(path)
+          /.\/$/ =~ path
+        end
     end
   end
 end
