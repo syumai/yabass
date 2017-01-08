@@ -1,0 +1,20 @@
+<h3>User info</h3>
+<div class="id">
+	id: <%= data['id'] %>
+</div>
+<div class="name">
+	name: <%= data['name'] %>
+</div>
+
+<h3>My posts</h3
+<div class="posts">
+	<ul>
+	<% data['_posts'].each do |post| %>
+		<li>
+			<a href="<%= post['id'] %>">
+				<%= post['title'] %>
+			</a>
+		</li>
+	<% end %>
+	</ul>
+</div>

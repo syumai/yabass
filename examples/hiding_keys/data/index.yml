@@ -1,7 +1,7 @@
 _users:
   - id: 1
     key: ken
-    name: First user
+    name: Ken
     _posts:
       - id: 1
         title: First post
