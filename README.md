@@ -53,6 +53,7 @@ Run `yabass generate` or `yabass g` then your static site will be generated in y
 ## Development
 
 * Run `yabass server` or `yabass s` to run local server. (in `localhost:3030`)
+* You can specify port number with option. (ex. `yabass s -p 3010`)
 
 ## Routing
 

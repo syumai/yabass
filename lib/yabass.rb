@@ -30,8 +30,8 @@ module Yabass
       Generator.generate(router)
     end
 
-    def server
-      Server.start(router)
+    def server(options)
+      Server.start(router, options)
     end
   end
 end

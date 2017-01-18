@@ -2,6 +2,16 @@
 
 require_relative '../lib/yabass'
 
+module Yabass::ArgsTest
+  refine String do
+    def integer?
+      true if Integer(self) rescue false
+    end
+  end
+end
+
+using Yabass::ArgsTest
+
 yabass = Yabass::Yabass.new(Dir.pwd)
 case ARGV.first
 when /^g(enerate)?$/
@@ -10,6 +20,21 @@ when /^g(enerate)?$/
 when /^r(outes)?$/
   yabass.routes
 when /^s(erver)?$/
-  yabass.server
+  options = {}
+  ARGV[1..-1].each_slice(2) do |(command, value)|
+    case command
+    when /^(\-p|\-\-port)$/
+      if value && value.integer?
+        options[:port] = value.to_i
+	  elsif value.nil?
+        puts "port number is blank"
+      else
+        puts "#{value} is not valid port number"
+      end
+    else
+      puts "command #{command} did not found"
+    end
+  end
+  yabass.server(options)
 end
 
