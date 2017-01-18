@@ -38,7 +38,7 @@ posts:
 
 ### 3.Generate static html
 
-Run `yabass generate` then your static site will be generated in your `public` directory!
+Run `yabass generate` or `yabass g` then your static site will be generated in your `public` directory!
 
 ```
 └── public
@@ -52,7 +52,7 @@ Run `yabass generate` then your static site will be generated in your `public` d
 
 ## Development
 
-* Run `yabass server` to run local server. (in `localhost:3030`)
+* Run `yabass server` or `yabass s` to run local server. (in `localhost:3030`)
 
 ## Routing
 
@@ -61,6 +61,7 @@ Run `yabass generate` then your static site will be generated in your `public` d
 * Generated html's routing is based on data YAML file.
 * `id` attribute is required for each records.
 * If you set `key` attribute on your record, it will be used as url.
+* When you want to see current routes, run `yabass routes` or `yabass r`.
 
 #### Example
 

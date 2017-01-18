@@ -4,12 +4,12 @@ require_relative '../lib/yabass'
 
 yabass = Yabass::Yabass.new(Dir.pwd)
 case ARGV.first
-when 'generate'
+when /^g(enerate)?$/
   yabass.generate
   yabass.routes
-when 'routes'
+when /^r(outes)?$/
   yabass.routes
-when 'server'
+when /^s(erver)?$/
   yabass.server
 end
 
