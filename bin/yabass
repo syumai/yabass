@@ -12,6 +12,18 @@ end
 
 using Yabass::ArgsTest
 
+if ARGV.first =~ /^(\-h)|(\-\-help)$/
+  puts "Usage:
+   yabass command [options] [arguments...]
+
+Commands:
+   routes [r]   # Print routes based on data file
+   generate [g] # Generate static HTML files in public directory
+   server [s]   # Preview pages at http://localhost:3030/
+                # use --port [-p] option to change port"
+  exit
+end
+
 yabass = Yabass::Yabass.new(Dir.pwd)
 case ARGV.first
 when /^g(enerate)?$/
@@ -23,7 +35,7 @@ when /^s(erver)?$/
   options = {}
   ARGV[1..-1].each_slice(2) do |(command, value)|
     case command
-    when /^(\-p|\-\-port)$/
+    when /^(\-p)|(\-\-port)$/
       if value && value.integer?
         options[:port] = value.to_i
 	  elsif value.nil?
