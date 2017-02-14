@@ -39,7 +39,7 @@ module Yabass
               break
             when 'rb'
               clean_room = Object.new
-              @data = clean_room.instance_eval(File.read(@data_path))
+              @data = clean_room.instance_eval(File.read(@data_path), @data_path)
               break
             end
           end
